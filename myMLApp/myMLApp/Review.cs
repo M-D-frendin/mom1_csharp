@@ -10,16 +10,18 @@ namespace myMLApp
     internal class Review
     {
 
-        //Private properties
+        //private properties
         private string _text = string.Empty; 
         private bool _isPositive = false; 
 
-        //Public properties
+        //public properties
         public string Text
         {
             get => _text; 
             set {
                 _text = value; 
+
+                //when property Text is set, determine sentiment
                 this._determineSentiment(); 
             }
         }
@@ -31,21 +33,22 @@ namespace myMLApp
             }
         }
 
-        //Constructor
+        //constructor, takes a review text as parameter
         public Review(string input)
         {
             this.Text = input;
         }
 
-        //Determine sentiment from review text
+        //determine sentiment from review text, is automatically called when Text property has been set
         private void _determineSentiment()
         {
+            //populate a model input structure with the review text
             var modelData = new SentimentModel.ModelInput() 
             {
                 Col0 = this.Text 
             };
 
-            //1 is "positive", 0 is "negative"
+            //make a prediction, returns 1 if "positive", 0 if "negative"
             SentimentModel.ModelOutput prediction = SentimentModel.Predict(modelData); 
 
             if (prediction.PredictedLabel == 1) {
